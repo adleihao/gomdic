@@ -1,0 +1,2 @@
+# gomdic
+dic manager
