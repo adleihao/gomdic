@@ -26,7 +26,6 @@ type mdic struct {
 	fileDic      map[string]*MdicFileInfo
 	mutexDic     map[string]*sync.RWMutex
 	dataDic      map[string]map[interface{}]interface{}
-	panicInfo    []string
 	panicMaxSIze int
 	log4sys      log4go.Logger
 	updateInterval time.Duration
@@ -47,7 +46,6 @@ func InitMdic(log log4go.Logger, updateInterval time.Duration) error {
 		fileDic:      make(map[string]*MdicFileInfo),
 		mutexDic:     make(map[string]*sync.RWMutex),
 		dataDic:      make(map[string]map[interface{}]interface{}),
-		panicInfo:    make([]string, 0),
 		panicMaxSIze: 10,
 		log4sys:      log,
 		updateInterval : updateInterval,
@@ -64,12 +62,6 @@ func InitMdic(log log4go.Logger, updateInterval time.Duration) error {
 	return nil
 }
 
-//func (m *Mdic)GetDicByName(name string) *MDicItemInf{
-//	item, ok := m.dic[name];if ok {
-//		return item
-//	}
-//	return nil
-//}
 func (m *mdic) Register(name, file_path string, dicPtr MDicParserInf) {
 
 	_, ok := m.fileDic[name]
@@ -199,15 +191,5 @@ func (m *mdic) GetValueByKeys(name string, keys ...interface{}) (values []interf
 		}
 		values[idx] = v
 	}
-	return
-}
-
-func (m *mdic) GetPanicInfoAndClean() (res []string) {
-	if len(m.panicInfo) == 0 {
-		res = nil
-		return
-	}
-	res = m.panicInfo
-	m.panicInfo = m.panicInfo[:0]
 	return
 }
